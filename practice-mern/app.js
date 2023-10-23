@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import HttpError from "./src/models/http-error.js";
-// import userRoute from "./src/routes/index.js";
 import placesRouts from "./src/routes/places-routes.js";
 import userRoute from "./src/routes/user-route.js";
 import { API_VERSION, PORT_NUMBER } from "./src/utils/constants.js";

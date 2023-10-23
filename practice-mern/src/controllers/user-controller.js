@@ -1,5 +1,6 @@
 import HttpError from "../models/http-error.js";
 import { v4 as uuid } from "uuid";
+import { validationResult } from "express-validator";
 
 const DUMMY_USERS = [
   {
@@ -27,7 +28,15 @@ export const index = (req, res, next) => {
 };
 
 export const signup = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
   const { name, email, password } = req.body;
+
+  if (DUMMY_USERS.find((u) => u.email === email)) {
+    throw new HttpError("Could not create user, email already exists.", 422);
+  }
 
   const createdUser = {
     id: uuid(),
