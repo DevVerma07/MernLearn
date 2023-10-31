@@ -3,7 +3,12 @@ import bodyParser from "body-parser";
 import HttpError from "./src/models/http-error.js";
 import placesRouts from "./src/routes/places-routes.js";
 import userRoute from "./src/routes/user-route.js";
-import { API_VERSION, PORT_NUMBER } from "./src/utils/constants.js";
+import mongoose from "mongoose";
+import {
+  API_VERSION,
+  PORT_NUMBER,
+  MONGO_DB_URL,
+} from "./src/utils/constants.js";
 
 const app = express();
 
@@ -26,6 +31,15 @@ app.use((error, req, res, next) => {
     .json({ message: error.message || "An unknown error occurred!" });
 });
 
-app.listen(PORT_NUMBER, () => {
-  console.log(`Server is listening on port number ${PORT_NUMBER}`);
-});
+mongoose
+  .connect(
+    "mongodb+srv://devkumarverma830:zvv1GlomnWHQExuJ@devcluster.w7qnayd.mongodb.net/places?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    app.listen(PORT_NUMBER, () => {
+      console.log(`Server is listening on port number ${PORT_NUMBER}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
